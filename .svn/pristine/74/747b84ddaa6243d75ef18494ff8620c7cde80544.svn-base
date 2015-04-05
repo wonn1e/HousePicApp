@@ -1,0 +1,194 @@
+package com.tacademy.penthouse.slidingmenu;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.Session.StatusCallback;
+import com.kakao.KakaoLink;
+import com.kakao.KakaoParameterException;
+import com.kakao.KakaoTalkLinkMessageBuilder;
+import com.tacademy.penthouse.MainActivity;
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.SplashActivity;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.item.ItemShareDialog;
+import com.tacademy.penthouse.manager.UserManager;
+
+public class InviteFragment extends Fragment{
+	ImageView kakaoLogo, fbLogo;
+	UserData myData = UserManager.getInstance().getuData();
+	private KakaoLink kakaoLink;
+	private KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder;
+
+	public static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
+	public static final List<String> READ_PERMISSIONS = Arrays.asList("read_stream");
+
+	private boolean isSubsetOf(Collection<String> subset,
+			Collection<String> superset) {
+		for (String string : subset) {
+			if (!superset.contains(string)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+		try {
+			kakaoLink = KakaoLink.getKakaoLink(getActivity());
+		} catch (KakaoParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		kakaoTalkLinkMessageBuilder = kakaoLink
+				.createKakaoTalkLinkMessageBuilder();
+
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater,
+			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.invite_fragment, container, false);
+		((ActionBarActivity)getActivity()).getSupportActionBar().hide();
+		ImageView homekey = (ImageView)v.findViewById(R.id.home_invite);
+		fbLogo = (ImageView)v.findViewById(R.id.share_facebook_logo);
+		kakaoLogo = (ImageView)v.findViewById(R.id.share_kakao_logo);
+		homekey.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((MainActivity)getActivity()).getSlidingMenu().toggle();
+			}
+		});
+
+		kakaoLogo.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				sendKakaoTalkLink();
+			}
+		});
+
+		if(myData != null){
+			//facebook Login시
+			if(SplashActivity.LOGIN_TYPE == 2){
+				fbLogo.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+			}else{
+				fbLogo.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Session.openActiveSession(getActivity(), InviteFragment.this, true, new StatusCallback() {
+							@Override
+							public void call(Session session, SessionState state,
+									Exception exception) {
+								if (session.isOpened()) {
+
+									List<String> permission = session
+											.getPermissions();
+									if (!isSubsetOf(PERMISSIONS, permission)) {
+										session.requestNewPublishPermissions(new Session.NewPermissionsRequest(
+												InviteFragment.this, PERMISSIONS));
+										return;
+									}
+									Bundle postParams = new Bundle();
+									postParams.putString("name", "1인 가구를 위한 인테리어 상품 추천 서비스:하우스픽 HousePic");
+									postParams.putString("caption", "HousePic(Mobile Application)");
+									postParams.putString("link", "https://www.facebook.com/pages/%ED%95%98%EC%9A%B0%EC%8A%A4%ED%94%BD-HousePic/353485538138508?fref=ts");
+									postParams.putString("picture", "http://54.178.158.103/icon.jpg");
+										
+									Request request = new Request(session,
+											"me/feed", postParams, HttpMethod.POST,
+											new Request.Callback() {
+
+										@Override
+										public void onCompleted(
+												Response response) {
+											if (response.getGraphObject() != null) {
+												JSONObject obj = response
+														.getGraphObject()
+														.getInnerJSONObject();
+												try {
+													String id = obj.getString("id");
+													//Toast.makeText(getActivity(), "공유 성공", Toast.LENGTH_SHORT).show();
+												} catch (JSONException e) {
+													e.printStackTrace();
+												}
+
+												//finish();
+											} else {
+												FacebookRequestError error = response
+														.getError();
+												Toast.makeText(
+														getActivity(),	"error : "+ error.getErrorMessage(),Toast.LENGTH_SHORT).show();
+											}
+
+										}
+									});
+									request.executeAsync();
+
+								}
+							}
+						});
+					}
+				});
+			}
+		}
+
+		return v;
+	}
+
+	private void sendKakaoTalkLink() {// String textType, String linkType,
+		try {
+			kakaoTalkLinkMessageBuilder.addText("1인 가구를 위한 인테리어 상품 추천 서비스: 하우스픽");// getString(string.kakaolink_text));
+			kakaoTalkLinkMessageBuilder.addImage("http://54.178.158.103/icon.jpg", 180, 180);
+			kakaoTalkLinkMessageBuilder.addWebButton("아이템 구경가기", null);
+			//					getString(string.housePiclink_webbutton), null);
+			kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(),
+					getActivity());
+		} catch (KakaoParameterException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (Session.getActiveSession() != null) {
+			Session.getActiveSession().onActivityResult(getActivity(),
+					requestCode, resultCode, data);
+			// dismiss();
+		}
+	}
+}

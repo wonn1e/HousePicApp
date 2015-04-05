@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="0.5dp"
+        android:background="#bfbfbf"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#ffffff"
+            android:layout_height="44dp" >
+
+            <ImageView
+                android:id="@+id/clickContactChoice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/white"
+                android:scaleType="fitXY"
+                android:src="@drawable/white"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <TextView
+                    android:id="@+id/currentContactChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="문의 유형 선택"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:typeface="sans" />
+
+                <ImageView
+                    android:id="@+id/contactSpinnerImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="16dp"
+                android:background="#bfbfbf"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#e1e1e1"
+                    android:orientation="vertical"
+                    android:padding="0.5dp" >
+
+                    <EditText
+                        android:id="@+id/emailInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="#fafafa"
+                        android:ems="10"
+                        android:hint="메일 주소를 입력하세요."
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="16dp"
+                        android:singleLine="true"
+                        android:textColorHint="#30000000"
+                        android:textSize="17sp"
+                        android:typeface="sans" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="12dp"
+                android:background="#bfbfbf"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#e1e1e1"
+                    android:orientation="vertical"
+                    android:padding="0.5dp" >
+
+                    <EditText
+                        android:id="@+id/titleInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="#fafafa"
+                        android:ems="10"
+                        android:hint="제목을 입력하세요"
+                        android:paddingLeft="16dp"
+                        android:singleLine="true"
+                        android:textColorHint="#30000000"
+                        android:textSize="17sp"
+                        android:typeface="sans" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/scrollView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="12dp"
+                    android:background="#bfbfbf"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#e1e1e1"
+                        android:orientation="vertical"
+                        android:padding="0.5dp" >
+
+                        <EditText
+                            android:id="@+id/contactInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="268dp"
+                            android:background="#fafafa"
+                            android:ems="10"
+                            android:gravity="center_vertical|top"
+                            android:hint="문의 사항을 입력해주세요."
+                            android:imeOptions="actionDone"
+                            android:paddingBottom="16dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:paddingTop="16dp"
+                            android:singleLine="false"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColorHint="#30000000"
+                            android:textSize="17sp"
+                            android:typeface="sans" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:id="@+id/sendContactBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/button"
+                android:text="문의 보내기"
+                android:textColor="#ffffff"
+                android:textSize="17sp"
+                android:typeface="sans" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/dim_contact"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/dim_drawable" />
+
+    </FrameLayout>
+
+</LinearLayout>

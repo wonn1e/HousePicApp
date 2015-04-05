@@ -1,0 +1,224 @@
+package com.tacademy.penthouse.house;
+
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.tacademy.penthouse.MainActivity;
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.RoomData;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.entity.UserRoomsResult;
+import com.tacademy.penthouse.entity.UsersResult;
+import com.tacademy.penthouse.manager.NetworkManager;
+import com.tacademy.penthouse.manager.UserManager;
+import com.tacademy.penthouse.member.LogInActivity;
+import com.tacademy.penthouse.neighbor.NeighborListActivity;
+import com.tacademy.penthouse.room.UserRoomInfoActivity;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
+
+public class HouseActivity extends Activity {
+   public static final String TAG_NICKNAME = "nickname";
+   public static final String TAG_HOUSENAME = "housename";
+   public static final String TAG_HOUSEINTRO = "houseintro";
+   public static final int REQUEST_CODE_EDITIMG = 0;
+   public static final int REQEUST_MAKE_NEW_ROOM = 1;
+   public static final String PARAM_USER_DATA = "uData";
+   public static final String PARAM_MY_DATA = "myData";
+
+   UserData myData = UserManager.getInstance().getuData();
+   GridView house_room_gridView;   
+   ArrayList<UserData> users = new ArrayList<UserData>();
+   UserData uData;
+   int uDataNum ;
+
+   ArrayList<RoomData> rooms = new ArrayList<RoomData>();
+   ArrayList<RoomData> visibleRooms = new ArrayList<RoomData>();
+   ArrayList<Integer> followUsers = new ArrayList<Integer>();
+   NoRoomInHouseView noRoomView;
+   RoomAdapter roomAdapter;
+   UserRoomsResult userRoomsResult;
+   TextView houseName, house_intro;
+   ImageView user_img, house_img, homeHouse, editImg;
+   ImageLoader loader;
+   DisplayImageOptions userOptions, houseOptions;
+   //수정 시 click인지 아닌지
+
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.house_layout);
+      editImg = (ImageView)findViewById(R.id.editHouseBtn);
+      editImg.setVisibility(View.GONE);
+      
+      View v = getLayoutInflater().inflate(R.layout.header_view_house_layout, null);
+      noRoomView = (NoRoomInHouseView)v.findViewById(R.id.noRoomInHouseView);
+      houseName = (TextView)findViewById(R.id.myHouseName);
+      homeHouse = (ImageView)findViewById(R.id.home_house);
+      house_room_gridView = (GridView)findViewById(R.id.header_grid_view);
+      
+      Intent i = getIntent();
+      uDataNum = i.getIntExtra("uData", -1);
+
+      ((StickyGridHeadersGridView)house_room_gridView).setAreHeadersSticky(false);
+      ((StickyGridHeadersGridView)house_room_gridView).setPadding(0, -17, 0, 0);
+      roomAdapter = new RoomAdapter(this);
+      house_room_gridView.setAdapter(roomAdapter);
+      homeHouse.setOnClickListener(new View.OnClickListener() {
+
+         @Override
+         public void onClick(View v) {
+            Intent i = new Intent(HouseActivity.this, MainActivity.class);
+            i.putExtra(MainActivity.MENU_TYPE, 1);
+            startActivity(i);
+         }
+      });
+      
+      house_room_gridView.setOnItemClickListener(new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view,
+                int position, long id) {
+        	 visibleRooms = roomAdapter.set();
+             Intent i = new Intent(HouseActivity.this, UserRoomInfoActivity.class);
+             i.putExtra("uData", userRoomsResult.result.user.user_num);
+             i.putExtra("rData", visibleRooms.get(position).room_num);
+             startActivity(i);
+          }
+       });
+      
+      roomAdapter.setOnAdapterFollowClickListener(new RoomAdapter.OnAdapterFollowClickListener() {
+
+         @Override
+         public void onFollowingClick(View v, UserData uData) {
+            Intent i = new Intent(HouseActivity.this, NeighborListActivity.class);
+            i.putExtra("uData", uDataNum);//uData);
+            i.putExtra(NeighborListActivity.PARAM_CURRENT_TAB, 0);//uData);
+            startActivity(i);
+         }
+
+         @Override
+         public void onFollowerClick(View v, UserData uData) {
+
+            Intent i = new Intent(HouseActivity.this, NeighborListActivity.class);
+            i.putExtra("uData", uDataNum);//uData);
+            i.putExtra(NeighborListActivity.PARAM_CURRENT_TAB, 1);//uData);
+            startActivity(i);            
+         }
+
+         @Override
+         public void onFollowClick(View v, UserData data) {
+            uData = data;
+            if(myData == null){
+               Intent i = new Intent(HouseActivity.this, LogInActivity.class);
+               startActivity(i);
+            }
+            else{
+               NetworkManager.getInstance().postFollowData(HouseActivity.this, myData.user_num, data.user_num, new NetworkManager.OnResultListener<ResultData>() {
+
+                  @Override
+                  public void onSuccess(ResultData result) {
+                     if(result.success == 1){
+                        roomAdapter.clear();
+                        getNewFollowList();
+                     }
+                  }
+
+                  @Override
+                  public void onFail(int code) {
+                     Toast.makeText(HouseActivity.this, "Fail to Follow!" + code, Toast.LENGTH_SHORT).show();
+                  }
+               });
+
+            }
+         }
+      });
+
+
+      loader = ImageLoader.getInstance();
+      getNewFollowList();
+   }
+   @Override
+   protected void onResume() {
+      super.onResume();
+      myData = UserManager.getInstance().getuData();
+	   roomAdapter.clear();
+	   getNewFollowList();
+   }
+   
+   private void initData(){
+	   if(myData == null){
+	   
+	   }
+	   
+      NetworkManager.getInstance().getUserInfoData(HouseActivity.this, uDataNum, new NetworkManager.OnResultListener<UserRoomsResult>() {
+
+         @Override
+         public void onSuccess(UserRoomsResult result) {
+            if(result.result != null){
+               userRoomsResult = result;
+               uData = result.result.user;
+               rooms = result.result.rooms;
+
+               roomAdapter.clear();
+               roomAdapter.put(result.result);
+               houseName.setText(uData.house_name);
+
+               noRoomView.setVisibility(View.GONE);
+               if(rooms.size() == 0){
+                  noRoomView.setVisibility(View.VISIBLE);
+               }
+            }
+         } 
+
+         @Override
+         public void onFail(int code) {
+            Toast.makeText(HouseActivity.this, "fail in UserHouse", Toast.LENGTH_SHORT).show();
+         }
+      });
+   }
+
+	public void getNewFollowList(){
+		if(myData != null){
+			NetworkManager.getInstance().getFollowingResultData(HouseActivity.this, myData.user_num, new NetworkManager.OnResultListener<UsersResult>() {
+
+				@Override
+				public void onSuccess(UsersResult result) {
+					if(followUsers != null)
+						followUsers.clear();
+					followUsers = new ArrayList<Integer>();
+					if(result.result != null){
+						for(int i = 0; i < result.result.users.size(); i++){
+							followUsers.add(result.result.users.get(i).user_num);
+						}
+						UserManager.getInstance().setFollowUsers(followUsers);
+					}
+					initData();
+				}
+
+				@Override
+				public void onFail(int code) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}else{
+			followUsers = null;
+			initData();
+		}
+		
+	}
+}

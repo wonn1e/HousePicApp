@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/sortClickView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/unfollow_btn"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/white"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/sortSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="0dp"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="14dp"
+                    android:text="정렬"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:typeface="sans" />
+
+                <ImageView
+                    android:id="@+id/sortSpinnerImg"
+                    android:layout_width="13dp"
+                    android:layout_height="9dp"
+                    android:layout_marginTop="2dp"
+                    android:src="@drawable/ic_seach_dropdown_unselect" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_weight="1" >
+
+            <ImageView
+                android:id="@+id/filterClickView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/abc_ab_bottom_solid_light_holo"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/white"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/filterSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="14dp"
+                    android:text="필터링"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="15sp"
+                    android:typeface="sans" />
+
+                <ImageView
+                    android:id="@+id/filterSpinnerImg"
+                    android:layout_width="13dp"
+                    android:layout_height="9dp"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="4dp"
+                    android:src="@drawable/ic_seach_dropdown_unselect" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <GridView
+            android:id="@+id/item_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:horizontalSpacing="2.5dp"
+            android:numColumns="2"
+            android:verticalSpacing="2.5dp" >
+        </GridView>
+
+        <ImageView
+            android:id="@+id/dim_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/dim_drawable" />
+
+    </FrameLayout>
+
+</LinearLayout>

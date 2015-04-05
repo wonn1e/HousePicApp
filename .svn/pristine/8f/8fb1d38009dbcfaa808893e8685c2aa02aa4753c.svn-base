@@ -1,0 +1,939 @@
+package com.tacademy.penthouse.manager;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+
+import org.apache.http.Header;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.tacademy.penthouse.MyApplication;
+import com.tacademy.penthouse.entity.ItemData;
+import com.tacademy.penthouse.entity.ItemItemsResult;
+import com.tacademy.penthouse.entity.ItemsResult;
+import com.tacademy.penthouse.entity.MultiUserRoomItemsResult;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.UserNumResult;
+import com.tacademy.penthouse.entity.UserRoomItemsData;
+import com.tacademy.penthouse.entity.UserRoomItemsResult;
+import com.tacademy.penthouse.entity.UserRoomsResult;
+import com.tacademy.penthouse.entity.UsersResult;
+
+public class NetworkManager {
+   public static final String PARAM_COUNT = "count";
+   public static final String PARAM_PAGE = "page";
+
+   public static final String PARAM_USER_ID ="user_id";
+   public static final String PARAM_USER_NUM = "user_num";
+   public static final String PARAM_MY_USER_NUM = "my_user_num";
+   public static final String PARAM_USER_PW = "user_password";
+   public static final String PARAM_USER_NICKNAME = "user_nickname";
+   public static final String PARAM_USER_IMG = "user_img_url";
+   public static final String PARAM_HOUSE_NAME = "house_name";
+   public static final String PARAM_HOUSE_IMG = "house_img_url";
+   public static final String PARAM_HOUSE_INTRO = "house_intro";
+   public static final String PARAM_ROOM_NAME = "room_name";
+   public static final String PARAM_ROOM_IMG = "room_img_url";
+   public static final String PARAM_ROOM_COLOR = "room_color";
+   public static final String PARAM_ROOM_ISPUBLIC = "room_ispublic";
+   public static final String PARAM_ROOM_NO = "room_num";
+   public static final String PARAM_ITEM_NO = "item_num";
+   public static final String PARAM_CATEGORY_NO = "category_num";
+   public static final String PARAM_THEME_NUM = "theme_num";
+   public static final String PARAM_SEARCH_QUERY = "TEXT";
+   public static final String PARAM_ALERT = "alert";
+   public static final String PARAM_TOKEN = "access_token";
+   public static final String PARAM_REGID = "registrationId";
+
+   //80
+   public static final String LOGOUT_URL = "http://54.178.158.103/logout";
+   public static final String LOGIN_URL = "http://54.178.158.103/login";
+   public static final String LostPW_URL ="http://54.178.158.103/findpwd";
+   public static final String MDRoomData_URL = "http://54.178.158.103/sample/room/viewList";
+   public static final String ItemRanking_URL = "http://54.178.158.103/item/rank";
+   public static final String UserInfoData_URL = "http://54.178.158.103/user/%s/profile";
+   public static final String Request_URL = "http://54.178.158.103/user/%s/require";
+   public static final String Edit_MyData_URL = "http://54.178.158.103/user/%s/profile/modify";
+   public static final String Follower_URL = "http://54.178.158.103/user/%s/followerList";
+   public static final String Following_URL = "http://54.178.158.103/user/%s/followingList";
+   public static final String ItemInfo_URL = "http://54.178.158.103/item/%s/viewDetails";
+   public static final String CategorySearch_URL = "http://54.178.158.103/item/category/%s/search";
+   //public static final String TextSearch_URL = "http://54.178.158.103/item/text/%s/search";
+   public static final String TextSearch_URL = "http://54.178.158.103/item/text/%s/theme/%s/search";
+   public static final String ItemShare_URL = "http://54.178.158.103/goapp/path/%s";
+
+   public static final String EveryoneRoomData_URL = "http://54.178.158.103/user/room/viewlist";
+   public static final String FriendsRoomData_URL = "http://54.178.158.103/user/%s/friends/room/viewlist";
+   public static final String makeRoom_URL = "http://54.178.158.103/user/%s/room/new";
+   public static final String postDeleteRoom_URL = "http://54.178.158.103/user/%s/room/%s/del";
+   public static final String postEditRoom_URL = "http://54.178.158.103/user/%s/room/%s/modify";   
+   public static final String roomInfo_URL = "http://54.178.158.103/user/%s/room/%s/item/viewlist";
+   public static final String pickItem_URL = "http://54.178.158.103/user/%s/room/%s/item/%s/new";
+   public static final String userRanking_URL = "http://54.178.158.103/user/rank";
+   public static final String REGISTER_URL = "http://54.178.158.103/register";
+   public static final String Follow_URL = "http://54.178.158.103/user/%s/follow";
+   public static final String MoveItem_URL = "http://54.178.158.103/user/%s/room/%s/move";
+   public static final String Contact_URL = "http://54.178.158.103/user/%s/require";
+   public static final String Change_PW_URL = "http://54.178.158.103/user/password/modify";
+   //public static final String Change_PW_URL = "http://54.178.158.103/user/%s/password/modify";
+   public static final String SearchFilter_URL = "http://54.178.158.103/item/category/%s/theme/%s/search";
+   public static final String FacebookLogin_URL = "http://54.178.158.103/login/facebook";
+   public static final String FacebookLogout_URL = "http://54.178.158.103/logout/facebook";
+   public static final String GCM_URL = "http://54.178.158.103/user/%s/push";
+
+   private static NetworkManager instance;
+   AsyncHttpClient client;
+   Gson gson;
+
+   Handler mHandler;
+
+   //Singleton
+   public static NetworkManager getInstance(){
+
+      if (instance == null) {
+         instance = new NetworkManager();
+      }
+      return instance;
+   }
+   private NetworkManager() {
+      mHandler = new Handler(Looper.getMainLooper());
+      try {
+         KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+         trustStore.load(null, null);
+         MySSLSocketFactory socketFactory = new MySSLSocketFactory(trustStore);
+         socketFactory.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+         client = new AsyncHttpClient();
+         client.setSSLSocketFactory(socketFactory);         
+         client.setCookieStore(new PersistentCookieStore(MyApplication.getContext()));
+         client.setTimeout(30000);
+         gson = new Gson();
+      } catch (KeyStoreException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (CertificateException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (KeyManagementException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (UnrecoverableKeyException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+
+   }
+
+   public interface OnResultListener<T>{
+      public void onSuccess(T result);
+      public void onFail(int code);
+   }
+
+   public void postGCM(Context context, int userNum, final OnResultListener<ResultData> listener){
+      String url = String.format( GCM_URL, userNum);
+      RequestParams params = new RequestParams();
+      client.post(context, url ,params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postLoginData(Context context, String userId, String user_password, String regId, final OnResultListener<UserNumResult> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_USER_ID, userId);
+      params.put(PARAM_USER_PW, user_password);   
+      params.put(PARAM_REGID, regId);
+
+      client.post(context, LOGIN_URL, params,new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UserNumResult unr = gson.fromJson(responseString, UserNumResult.class);
+            listener.onSuccess(unr);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postFacebookLogin(Context context, String token, String regId, final OnResultListener<UserNumResult> listener){
+      RequestParams params = new RequestParams();
+
+      params.put(PARAM_TOKEN, token);
+      params.put(PARAM_REGID, regId);
+
+      client.post(context, FacebookLogin_URL,params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UserNumResult unr = gson.fromJson(responseString, UserNumResult.class);
+            listener.onSuccess(unr);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postFacebookLogout(Context context, final OnResultListener<ResultData> listener){
+      client.get(context,FacebookLogout_URL, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void postLogoutData(Context context, int user_num, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_USER_NUM, user_num);
+
+      client.post(context,LOGOUT_URL, params,new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+            Log.d("Result Message", rd.result_msg);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+
+      });
+   }
+
+   public void postLostPWData(Context context, String userId, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_USER_ID, userId);
+      client.post(context, LostPW_URL, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData d = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(d);
+
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postRegister(Context context, String userId, String userPW, String nickName, String houseName, String regId,
+         final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_USER_ID, userId);
+      params.put(PARAM_USER_PW, userPW);
+      params.put(PARAM_USER_NICKNAME, nickName);
+      params.put(PARAM_HOUSE_NAME, houseName);
+      params.put(PARAM_REGID, regId);
+
+      client.post(context, REGISTER_URL,params, new TextHttpResponseHandler(){
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData d = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(d);
+         }
+
+      });
+   }
+
+
+   public void getMDRoomData(Context context, int page, final OnResultListener<MultiUserRoomItemsResult> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_PAGE, page +"");
+
+      client.get(context, MDRoomData_URL, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            MultiUserRoomItemsResult rrd = gson.fromJson(responseString, MultiUserRoomItemsResult.class);
+
+            if (rrd.success == 1) {
+               for (UserRoomItemsData user : rrd.result.users) {
+                  user.user.parent = user;
+                  user.room.parent = user;
+                  for (ItemData item : user.items) {
+                     item.parent = user;
+                  }
+               }
+            }else{
+               rrd.result = null;
+            }
+
+            listener.onSuccess(rrd);
+
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+
+   }
+
+
+   public void getItemRankingResultData(Context context, final OnResultListener<ItemsResult> listener){
+      client.get(context, ItemRanking_URL, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ItemsResult rankingResult = gson.fromJson(responseString, ItemsResult.class);
+            listener.onSuccess(rankingResult);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void getUserRankingResultData(Context context, final OnResultListener<UsersResult> listener){
+      client.get(context, userRanking_URL, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UsersResult rankingR = gson.fromJson(responseString, UsersResult.class);
+            listener.onSuccess(rankingR);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void getUserInfoData(Context context, int userNum, final OnResultListener<UserRoomsResult> listener){
+      String url = String.format( UserInfoData_URL, userNum);
+
+      client.get(context, url, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UserRoomsResult userR = gson.fromJson(responseString, UserRoomsResult.class);
+            listener.onSuccess(userR);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   //문의하기
+
+   public void postRequest(Context context, int userNum, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(Request_URL, userNum);
+      //   params.put(PARAM_USER_NUM, ""+userNum);
+
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData result = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(result);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void postEditMyData(Context context, int userNum, String user_nickname,
+         String user_img_url, String house_name, String house_img_url, String house_intro, int alert,
+         final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(Edit_MyData_URL, userNum);
+      params.put(PARAM_ALERT, alert+"");
+
+      params.put(PARAM_USER_NICKNAME, user_nickname);
+      if(user_img_url != null){
+         try {
+            if(user_img_url.contains("temp")){
+               params.put(PARAM_USER_IMG, new File(user_img_url));
+            }else{
+               params.put(PARAM_USER_IMG, user_img_url);
+            }
+         } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+         }
+         params.put(PARAM_HOUSE_NAME, house_name);
+
+         if(house_img_url != null){
+            try {
+               if(house_img_url.contains("temp")){
+                  params.put(PARAM_HOUSE_IMG, new File(house_img_url));
+               }else{
+                  params.put(PARAM_HOUSE_IMG, house_img_url);
+               }
+            } catch (FileNotFoundException e) {
+               e.printStackTrace();
+            }
+         }
+         params.put(PARAM_HOUSE_INTRO, house_intro);
+
+         client.post(context, url, params, new TextHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers,
+                  String responseString) {
+               ResultData newData = gson.fromJson(responseString, ResultData.class);
+               listener.onSuccess(newData);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers,
+                  String responseString, Throwable throwable) {
+               listener.onFail(statusCode);
+            }
+         });
+      }
+   }
+
+   public void getFollowerResultData(Context context, int userNum, final OnResultListener<UsersResult> listener){
+      //   RequestParams params = new RequestParams();
+      String url = String.format(Follower_URL, userNum);
+
+      //   params.put(PARAM_USER_NUM, ""+userNum);
+
+
+      client.get(context, url , new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UsersResult follower_result= gson.fromJson(responseString, UsersResult.class);
+            listener.onSuccess(follower_result);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void getFollowingResultData(Context context, int userNum, final OnResultListener<UsersResult> listener){
+      //  RequestParams params = new RequestParams();
+      String url = String.format(Following_URL, userNum);
+      //  params.put(PARAM_USER_NUM, ""+userNum);
+
+      client.get(context, url , new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            UsersResult following_users = gson.fromJson(responseString, UsersResult.class);
+            listener.onSuccess(following_users);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postFollowData(Context context, int myUserNum, int userNum, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(Follow_URL, userNum);
+      //      params.put(PARAM_USER_NUM, myUserNum);
+
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData result = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(result);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+   public void getItemInfoResultData(Context context, int item_num, final OnResultListener<ItemItemsResult> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(ItemInfo_URL, item_num);
+      //     params.put(PARAM_ITEM_NO, "" + item_num);
+
+      client.get(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ItemItemsResult result = gson.fromJson(responseString, ItemItemsResult.class);
+            listener.onSuccess(result);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void getCategorySearchResultData(Context context, int cate_num, final OnResultListener<ItemsResult> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(CategorySearch_URL, cate_num);
+      //     params.put(PARAM_CATEGORY_NO, ""+cate_num);
+
+      client.get(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ItemsResult category_result = gson.fromJson(responseString, ItemsResult.class);
+            listener.onSuccess(category_result);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+
+         }
+
+      });
+   }
+
+   public void getSearchFilterData(Context context, int cateNum, int themeNum, String option,
+         final OnResultListener<ItemsResult> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(SearchFilter_URL, cateNum, themeNum);
+      params.put("option", option);
+
+      client.get(context, url, params, new TextHttpResponseHandler(){
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ItemsResult category_result = gson.fromJson(responseString, ItemsResult.class);
+            listener.onSuccess(category_result);
+         }
+
+      });
+   }
+
+
+   public void getTextSearchResultData(Context context, String keyword, int themeNum,String option, final OnResultListener<ItemsResult> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(TextSearch_URL, keyword, themeNum);
+      params.put("option", option);
+      client.get(context, url , params,new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ItemsResult item_result = gson.fromJson(responseString, ItemsResult.class);
+            listener.onSuccess(item_result);
+
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void getEveryoneRoomData(Context context, int page, final OnResultListener<MultiUserRoomItemsResult> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_PAGE, page+"");
+      client.get(context, EveryoneRoomData_URL, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            MultiUserRoomItemsResult rrd = gson.fromJson(responseString, MultiUserRoomItemsResult.class);
+
+            if (rrd.success == 1) {
+               for (UserRoomItemsData user : rrd.result.users) {
+                  user.user.parent = user;
+                  user.room.parent = user;
+                  for (ItemData item : user.items) {
+                     item.parent = user;
+                  }
+               }
+            }
+
+            listener.onSuccess(rrd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void getFriendRoomData(Context context, int userNum, int pageCnt, final OnResultListener<MultiUserRoomItemsResult> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(FriendsRoomData_URL, userNum);
+      params.put(PARAM_PAGE, pageCnt + "");
+
+      client.get(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            MultiUserRoomItemsResult rrd = gson.fromJson(responseString, MultiUserRoomItemsResult.class);
+
+            if (rrd.success == 1) {
+               for (UserRoomItemsData user : rrd.result.users) {
+                  user.user.parent = user;
+                  user.room.parent = user;
+                  for (ItemData item : user.items) {
+                     item.parent = user;
+                  }
+               }
+            }
+            listener.onSuccess(rrd);
+
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+
+         }
+      });
+   }
+
+   public void postMakeRoom(Context context, int userNum, String room_name, String room_img, 
+         String room_color, int ispublic, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(makeRoom_URL, userNum);
+      params.put(PARAM_ROOM_NAME,room_name);
+      try {
+         params.put(PARAM_ROOM_IMG, new File(room_img));
+      } catch (FileNotFoundException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      params.put(PARAM_ROOM_COLOR, room_color);
+      params.put(PARAM_ROOM_ISPUBLIC, ""+ispublic);
+
+      client.post(context, url,params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void postDeleteRoom(Context context, int userNum, int room_num, final OnResultListener<ResultData> listener){
+      String url = String.format(postDeleteRoom_URL, userNum, room_num);
+      RequestParams params = new RequestParams();
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+
+   public void postEditRoom(Context context, int userNum, int room_num, String room_name, String room_img, 
+         String room_color,int ispublic,final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(postEditRoom_URL, userNum, room_num);
+      params.put(PARAM_ROOM_NAME, room_name);
+      try {
+         if(room_img != null){
+            if(room_img.contains("temp")){
+               params.put(PARAM_ROOM_IMG, new File(room_img));
+            }else{
+               params.put(PARAM_ROOM_IMG, room_img);
+            }
+         }
+      } catch (FileNotFoundException e1) {
+         e1.printStackTrace();
+      }
+      params.put(PARAM_ROOM_COLOR, room_color);
+      params.put(PARAM_ROOM_ISPUBLIC, ""+ ispublic);
+
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+
+   }
+
+
+   public void getRoomInfo(Context context, int userNum, int room_num, final OnResultListener<UserRoomItemsResult> listener){
+      //      RequestParams params = new RequestParams();
+      String url = String.format(roomInfo_URL,userNum, room_num);
+
+      client.get(context, url ,new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers, String responseString) {
+            UserRoomItemsResult rd = gson.fromJson(responseString, UserRoomItemsResult.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postContact(Context context, int userNum, String title, String content, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.add("title", title);
+      params.add("content", content);
+      String url = String.format(Contact_URL, userNum);
+
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);            
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+   public void postPickItem(Context context, int userNum, int room_num, int item_num, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      String url = String.format(pickItem_URL, userNum, room_num, item_num);
+
+      client.post(context, url, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+
+   public void postMoveItem(Context context, int userNum, int room_num, int new_room_num, int itemNum, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_ROOM_NO, "" + new_room_num);
+      params.put(PARAM_ITEM_NO, "" + itemNum );
+      String url = String.format(MoveItem_URL, userNum, room_num);
+
+      client.post(context, url, params, new TextHttpResponseHandler(){
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+
+         }
+
+      });
+   }
+   public void postChangePW(Context context, int userNum, String password, final OnResultListener<ResultData> listener){
+      RequestParams params = new RequestParams();
+      params.put(PARAM_USER_NUM, userNum+"");
+      params.put(PARAM_USER_PW, password);
+      //String url = String.format(Change_PW_URL);
+
+      client.post(context, Change_PW_URL, params, new TextHttpResponseHandler() {
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+      });
+   }
+   
+   public void getItemShare(Context context, int itemNum, final OnResultListener<ResultData> listener){
+      String url = String.format(ItemShare_URL, itemNum);
+      client.get(context, url, new TextHttpResponseHandler(){
+
+         @Override
+         public void onFailure(int statusCode, Header[] headers,
+               String responseString, Throwable throwable) {
+            listener.onFail(statusCode);
+         }
+
+         @Override
+         public void onSuccess(int statusCode, Header[] headers,
+               String responseString) {
+            Gson gson = new Gson();
+            ResultData rd = gson.fromJson(responseString, ResultData.class);
+            listener.onSuccess(rd);
+         }
+         
+      });
+   }
+
+}
+
+//static class DataTask extends AsyncTask...

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+     <FrameLayout
+                android:id="@+id/my_house"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+         <LinearLayout
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:layout_marginTop="250dp" >
+
+             <TextView
+                 android:id="@+id/my_NicknameHouse"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_marginRight="6dp"
+                 android:gravity="center"
+                 android:singleLine="true"
+                 android:text="Nickname"
+                 android:textAppearance="?android:attr/textAppearanceMedium"
+                 android:textColor="#000000"
+                 android:textSize="20sp"
+                 android:textStyle="bold"
+                 android:typeface="sans" />
+
+             <TextView
+                 android:id="@+id/editNickname"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_vertical"
+                 android:layout_marginTop="1dp"
+                 android:background="@drawable/edit_box"
+                 android:gravity="center_vertical"
+                 android:paddingBottom="3dp"
+                 android:paddingLeft="5dp"
+                 android:paddingRight="5dp"
+                 android:paddingTop="3dp"
+                 android:text="Edit"
+                 android:textColor="#ffffff"
+                 android:textSize="11sp"
+                 android:typeface="sans" />
+
+         </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/my_houseImgHouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_myhouse_default" />
+
+                <ImageView
+                    android:id="@+id/myImg_whiteLine"
+                    android:layout_width="108dp"
+                    android:layout_height="110.5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="129.5dp"
+                    android:src="@drawable/img_mypage_stroke" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="106dp"
+                    android:layout_marginTop="131.5dp"
+                    android:orientation="vertical" >
+
+                    <com.tacademy.penthouse.house.ImageViewRounded
+                        android:id="@+id/my_ImgHouse"
+                        android:layout_width="106dp"
+                        android:layout_height="106dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/img_mypage_default" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/editHouseImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="160dp"
+                    android:background="@drawable/edit_box"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="3dp"
+                    android:text="Edit"
+                    android:textColor="#ffffff"
+                    android:textSize="11sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/editUserImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="200dp"
+                    android:background="@drawable/edit_box"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="3dp"
+                    android:text="Edit"
+                    android:textColor="#ffffff"
+                    android:textSize="11sp"
+                    android:typeface="sans" />
+ 			
+            </FrameLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="#ffffff"
+                 android:paddingBottom="17dp" >
+
+                 <FrameLayout
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1" >
+
+                     <Button
+                         android:id="@+id/my_followerBtnHouse"
+                         style="?android:attr/buttonStyleSmall"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1"
+                         android:background="#ffffff"
+                         android:gravity="right|center_vertical"
+                         android:paddingRight="14dp"
+                         android:text="17"
+                         android:textColor="#90000000"
+                         android:textSize="15sp"
+                         android:typeface="sans" />
+
+                 </FrameLayout>
+
+                 <FrameLayout
+                     android:layout_width="0dp"
+                     android:layout_height="match_parent"
+                     android:layout_weight="1" >
+
+                     <Button
+                         android:id="@+id/my_followingBtnHouse"
+                         style="?android:attr/buttonStyleSmall"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1"
+                         android:background="#ffffff"
+                         android:gravity="left|center_vertical"
+                         android:paddingLeft="14dp"
+                         android:text="16"
+                         android:textColor="#90000000"
+                         android:textSize="15sp"
+                         android:typeface="sans" />
+
+                 </FrameLayout>
+
+            </LinearLayout>
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal" >
+
+                 <TextView
+                     android:id="@+id/my_houseInfoHouse"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginBottom="40dp"
+                     android:layout_marginRight="6dp"
+                     android:background="#ffffff"
+                     android:gravity="center"
+                     android:maxLines="2"
+                     android:text="House Info"
+                     android:textAppearance="?android:attr/textAppearanceSmall"
+                     android:textColor="#50000000"
+                     android:textSize="13sp"
+                     android:typeface="sans" />
+
+                 <TextView
+                     android:id="@+id/editHouseInfo"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/edit_box"
+                     android:paddingBottom="3dp"
+                     android:paddingLeft="5dp"
+                     android:paddingRight="5dp"
+                     android:paddingTop="3dp"
+                     android:text="Edit"
+                     android:textColor="#ffffff"
+                     android:textSize="11sp"
+                     android:typeface="sans" />
+
+             </LinearLayout>
+ 
+</LinearLayout>

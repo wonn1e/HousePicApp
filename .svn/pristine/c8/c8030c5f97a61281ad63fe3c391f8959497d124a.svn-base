@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="false"
+    android:orientation="horizontal"
+    android:background="#10000000"
+    android:paddingBottom="0.5dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:background="#ffffff" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/itemImgRank"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/tulips" />
+
+            <ImageView
+                android:id="@+id/showItemRank"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/abc_ab_solid_light_holo" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/itemNameRank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="29dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="Item 이름"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/itemPriceRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150,000원"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  |  "
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/itemLikeNumRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" PICK"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/likeItemBtnRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="18dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:src="@drawable/ic_ranking_pick_off" />
+
+    </LinearLayout>
+
+</LinearLayout>

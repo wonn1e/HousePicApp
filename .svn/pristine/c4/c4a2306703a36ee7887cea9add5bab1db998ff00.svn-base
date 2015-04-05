@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+   <FrameLayout
+                android:id="@+id/house"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:orientation="vertical" >
+
+           <TextView
+               android:id="@+id/userNicknameHouse"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="20dp"
+               android:layout_marginTop="250dp"
+               android:gravity="center_horizontal"
+               android:singleLine="true"
+               android:text="Nickname"
+               android:textAppearance="?android:attr/textAppearanceMedium"
+               android:textColor="#000000"
+               android:textSize="20sp"
+               android:textStyle="bold"
+               android:typeface="sans" />
+       </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/houseImgHouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="194dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/img_myhouse_default" />
+
+                <ImageView
+                    android:id="@+id/userImg_whiteLine"
+                    android:layout_width="108dp"
+                    android:layout_height="110.5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="129.5dp"
+                    android:src="@drawable/img_mypage_stroke" />
+
+                <com.tacademy.penthouse.house.ImageViewRounded
+                    android:id="@+id/userImgHouse"
+                    android:layout_width="106dp"
+                    android:layout_height="106dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="131.5dp"
+                    android:src="@drawable/img_mypage_default" />
+
+            </FrameLayout>
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="45dp"
+                 android:layout_marginBottom="28dp" >
+
+                 <FrameLayout
+                     android:layout_width="0dp"
+                     android:layout_height="45dp"
+                     android:layout_gravity="center"
+                     android:layout_weight="1" >
+
+                     <Button
+                         android:id="@+id/followerBtnHouse"
+                         style="?android:attr/buttonStyleSmall"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:layout_weight="1"
+                         android:background="#ffffff"
+                         android:gravity="center_vertical|right"
+                         android:paddingRight="19dp"
+                         android:text="Follower"
+                         android:textColor="#90000000"
+                         android:textSize="15sp"
+                         android:typeface="sans" />
+
+                 </FrameLayout>
+
+                 <FrameLayout
+                     android:layout_width="0dp"
+                     android:layout_height="45dp"
+                     android:layout_gravity="center"
+                     android:layout_weight="1" >
+
+                     <Button
+                         android:id="@+id/followingBtnHouse"
+                         style="?android:attr/buttonStyleSmall"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:layout_weight="1"
+                         android:background="#ffffff"
+                         android:gravity="center"
+                         android:text="Following"
+                         android:textColor="#90000000"
+                         android:textSize="15sp"
+                         android:typeface="sans" />
+
+                 </FrameLayout>
+
+                <Button
+                    android:id="@+id/followBtnHouse"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="22dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/unfollow_btn"
+                    android:text="Follow"
+                    android:textColor="#ffffff"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+
+             <TextView
+                 android:id="@+id/houseInfoHouse"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:maxLines="2"
+                 android:paddingBottom="40dp"
+                 android:text="House Info"
+                 android:textAppearance="?android:attr/textAppearanceSmall"
+                 android:textColor="#50000000"
+                 android:textSize="13sp"
+                 android:typeface="sans" />
+ 
+             <com.tacademy.penthouse.house.NoRoomInHouseView
+                 android:id="@+id/noRoomInHouseView"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent" />
+</LinearLayout>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+        <FrameLayout
+            android:id="@+id/FrameLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_home" />
+
+            <TextView
+                android:id="@+id/show_recommendation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:textSize="15sp"
+                android:typeface="sans"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="홈"
+                android:textColor="@color/sliding_menu" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+       <FrameLayout
+            android:id="@+id/FrameLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_search" />
+
+            <TextView
+                android:id="@+id/show_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:text="검색"
+                android:typeface="sans"
+                android:textSize="15sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/sliding_menu" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_mypage" />
+
+            <TextView
+                android:id="@+id/my_page"
+                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:text="마이페이지"
+                android:typeface="sans"
+                android:textSize="15sp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/sliding_menu" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_ranking" />
+
+            <TextView
+                android:id="@+id/show_ranking"
+                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:text="랭킹"
+                android:textSize="15sp"
+                android:typeface="sans"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/sliding_menu" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_invite" />
+
+            <TextView
+                android:id="@+id/show_invite"
+                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:text="친구초대"
+                android:textSize="15sp"
+                android:typeface="sans"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/sliding_menu" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d9d9d9"
+        android:orientation="vertical"
+        android:paddingBottom="0.5dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/ic_slidebar_setting" />
+
+            <TextView
+                android:id="@+id/show_setting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="27.5dp"
+                android:paddingLeft="69dp"
+                android:paddingTop="28dp"
+                android:text="설정"
+                android:textSize="15sp"
+                android:typeface="sans"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/sliding_menu" />
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

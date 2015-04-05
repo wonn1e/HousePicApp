@@ -1,0 +1,11 @@
+package com.tacademy.penthouse.house;
+
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.manager.UserManager;
+
+import android.app.Activity;
+
+public class EditMyHouseActivity extends Activity {
+	UserData myData = UserManager.getInstance().getuData();
+	
+}

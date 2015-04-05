@@ -1,0 +1,106 @@
+package com.tacademy.penthouse.house;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.manager.NetworkManager;
+import com.tacademy.penthouse.manager.UserManager;
+
+public class EditHouseName extends DialogFragment {
+	EditText editHousename;
+	ImageView cancel;
+	String editValue = "";
+	String houseName = "";
+	UserData userData = UserManager.getInstance().getuData();
+	MyRoomAdapter myRoomAdapter;
+	String pw = UserManager.getInstance().getPassword();
+	
+	public interface OnReceiveHousenameListener{
+		public void onReceiveHousename(int success);
+	}
+	
+	OnReceiveHousenameListener mListener;
+	
+	public void setOnReceiveHousenameListener(OnReceiveHousenameListener listener){
+		mListener = listener;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(DialogFragment.STYLE_NORMAL, R.style.HouseDialog);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		Dialog d  = getDialog();
+		myRoomAdapter = new MyRoomAdapter(getActivity());
+		
+		View v= inflater.inflate(R.layout.edit_house_name_layout, container, false);
+		cancel = (ImageView)v.findViewById(R.id.cancel_housename);
+		editHousename = (EditText)v.findViewById(R.id.edit_housename);
+		editHousename.setText(editValue);
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(12);
+		editHousename.setFilters(FilterArray);
+		cancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+		
+		Button btn = (Button)v.findViewById(R.id.name_changed_btn);
+		btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				houseName = editHousename.getText().toString();
+				if(houseName != null && !houseName.equals("")){
+
+					NetworkManager.getInstance().postEditMyData(getActivity(), userData.user_num, userData.user_nickname, null,
+							houseName, null, userData.house_intro,userData.alert, new NetworkManager.OnResultListener<ResultData>() {
+
+						@Override
+						public void onSuccess(ResultData result) {
+							myRoomAdapter.updateHouseName(userData, houseName);
+							if(mListener != null){
+								mListener.onReceiveHousename(1);
+							}
+							dismiss();
+						}
+
+						@Override
+						public void onFail(int code) {
+							Toast.makeText(getActivity(), "집 이름 바꾸기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+
+			}
+		});
+		
+		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+		super.onActivityCreated(arg0);
+		Dialog d= getDialog();
+	}
+
+}

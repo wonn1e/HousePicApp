@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HousePic</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_room_info">RoomInfoActivity</string>
+    <string name="title_activity_my_room_info">MyRoomInfoActivity</string>
+    <string name="title_activity_item_info">ItemInfoActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_category_search">CategorySearchActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_log_in_dialog">LogInDialogActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_config_inform">ConfigInformActivity</string>
+    <string name="title_activity_notice">NoticeActivity</string>
+    <string name="title_activity_my_house">MyHouseActivity</string>
+    <string name="housePiclink_weblink">Go to HousePic website</string>
+    <string name="housePiclink_webbutton">Go to HousePic web</string>
+    <string name="app_id">767445863317896</string>
+
+</resources>

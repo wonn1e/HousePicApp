@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tabSelect_ranking">#000000</color>
+    <color name="tabNotSelect_ranking">#40000000</color>
+    <color name="actionBar_text">#ffffff</color>
+    <color name="actionBar_color">#40639a</color>
+    <color name="white">#ffffff</color>
+    <color name="grey">#90000000</color>
+    <color name="unable">#30000000</color>
+    <color name="brown">#b28850</color>
+    
+</resources>

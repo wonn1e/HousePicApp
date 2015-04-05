@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="93dp"
+        android:src="@drawable/img_room_emptyroom" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="26dp"
+        android:text="PICK하여 방을 꾸며보세요."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#40000000"
+        android:typeface="sans"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="현재 방에 담긴 아이템이 없습니다."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#30000000"
+        android:typeface="sans"
+        android:textSize="13sp" />
+
+</LinearLayout>

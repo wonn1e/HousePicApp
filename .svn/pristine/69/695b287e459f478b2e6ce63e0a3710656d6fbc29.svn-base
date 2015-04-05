@@ -1,0 +1,198 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/editvoxt_outside"
+        android:orientation="vertical"
+        android:padding="0.5dp" >
+
+        <EditText
+            android:id="@+id/sign_up_email"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/editbox_inside"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="메일 주소를 입력해주세요."
+            android:inputType="textEmailAddress"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#30000000"
+            android:textSize="17dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/editvoxt_outside"
+        android:orientation="vertical"
+        android:padding="0.5dp" >
+
+        <EditText
+            android:id="@+id/sign_up_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/editbox_inside"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="닉네임을 입력해주세요 (10자 이내)."
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#30000000"
+            android:textSize="17dp"
+            android:typeface="sans" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/editvoxt_outside"
+        android:orientation="vertical"
+        android:padding="0.5dp" >
+
+        <EditText
+            android:id="@+id/sign_up_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/editbox_inside"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="패스워드를 입력해주세요."
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#30000000"
+            android:textSize="17dp" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sign_up_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/button"
+        android:text="가입하기"
+        android:textColor="#ffffff"
+        android:textSize="17dp"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="펜트하우스에 가입함으로써"
+            android:textColor="#000000"
+            android:textSize="14dp"
+            android:typeface="sans" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp" >
+
+            <TextView
+                android:id="@+id/rules_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이용약관"
+                android:textColor="#204a6e"
+                android:textSize="14dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:id="@+id/TextView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="과"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000000"
+                android:textSize="14dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:id="@+id/privacy_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보취급방침"
+                android:textColor="#204a6e"
+                android:textSize="14dp"
+                android:typeface="sans" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="에 동의합니다."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#000000"
+                android:textSize="14dp"
+                android:typeface="sans" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/sign_up_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/blue_btn"
+            android:text="페이스북 로그인"
+            android:textColor="#ffffff"
+            android:textSize="17dp"
+            android:typeface="sans" />
+    </LinearLayout>
+
+</LinearLayout>

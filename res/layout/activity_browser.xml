@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <WebView
+        android:id="@+id/webView1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="0.5dp"
+        android:background="#20000000"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/control_view"
+            android:layout_width="match_parent"
+            android:background="#ffffff"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/btn_prev"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="26.5dp"
+                    android:layout_height="26.5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="31dp"
+                    android:src="@drawable/ic_browser_prev" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/btn_next"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="26.5dp"
+                    android:layout_height="26.5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_browser_next" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/abc_ab_bottom_solid_light_holo"
+                android:visibility="invisible" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/btn_home"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="26.5dp"
+                    android:layout_height="26.5dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="13dp"
+                    android:src="@drawable/ic_browser_home" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <Button
+                    android:id="@+id/btn_refresh"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="26.5dp"
+                    android:layout_height="26.5dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="31dp"
+                    android:src="@drawable/ic_browser_refresh" />
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

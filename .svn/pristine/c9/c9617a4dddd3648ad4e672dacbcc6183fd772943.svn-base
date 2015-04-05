@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45.5dp"
+ 	android:paddingBottom="0.5dp"
+ 	android:background="#dbdbdb" >
+    <TextView 
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#ffffff"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/search_category"
+        android:textColorLink="@null"
+        android:textSize="15dp"
+        android:typeface="sans" />
+</LinearLayout>

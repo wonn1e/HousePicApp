@@ -1,0 +1,391 @@
+package com.tacademy.penthouse.house;
+
+import java.io.File;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.manager.NetworkManager;
+import com.tacademy.penthouse.manager.UserManager;
+
+public class EditMyHouseActivity extends FragmentActivity {
+	public static final int REQUEST_CODE_HOUSE = 10;
+	public static final int REQUEST_CODE_USER = 20;
+	
+	UserData originalData;
+	UserData myData = UserManager.getInstance().getuData();
+	File mSavedFile;
+	ImageView houseImg, userImg;
+	TextView text;
+	EditText getNickname, getHouseName, getHouseIntro;
+	String houseImgURL = "", userImgURL = "";
+	Button btn;
+	ImageLoader loader;
+	DisplayImageOptions options, UserOpt;
+	boolean nickIn = false, houseNameIn = false, introIn = false,
+			houseImgIn = false, userImgIn = false; 
+
+	TextWatcher textWatcherNick = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			String text = s.toString();
+			if(text != null && !text.equals("")) {
+				nickIn = true;
+			} else {
+				nickIn = false;
+			}
+			verifyButton();
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
+
+	TextWatcher textWatcherName = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			String text = s.toString();
+			if(text != null && !text.equals("")) {
+				houseNameIn = true;
+			} else {
+				houseNameIn = false;
+			}
+			verifyButton();
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
+
+	TextWatcher textWatcherIntro = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			String text = s.toString();
+			if(text != null && !text.equals("")) {
+				introIn = true;
+			} else {
+				introIn = false;
+			}
+			verifyButton();
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
+
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_edit_house);
+		loader = ImageLoader.getInstance();
+		options = new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.img_addroom_default)
+		.showImageForEmptyUri(R.drawable.ic_empty)
+		.showImageOnFail(R.drawable.img_addroom_default)
+		.cacheInMemory(true)
+		.cacheOnDisc(true)
+		.considerExifParams(true)
+		.build();
+		UserOpt = new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.img_mypage_default)
+		.showImageForEmptyUri(R.drawable.btn_color_normal_10)
+		.showImageOnFail(R.drawable.btn_color_normal_06)
+		.cacheInMemory(true)
+		.cacheOnDisc(true)
+		.considerExifParams(true)
+		.build(); 
+
+		btn = (Button)findViewById(R.id.edit_house_btn);
+		houseImg = (ImageView)findViewById(R.id.newHouseImg);
+		userImg = (ImageView)findViewById(R.id.newProfilePic);
+		text = (TextView)findViewById(R.id.text_editHouse);
+
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(10);
+		getNickname = (EditText)findViewById(R.id.getUserNickname);
+		getNickname.setFilters(FilterArray);
+		getNickname.addTextChangedListener(textWatcherNick);
+
+		InputFilter[] FilterArray1 = new InputFilter[1];
+		FilterArray1[0] = new InputFilter.LengthFilter(50);
+		getHouseIntro = (EditText)findViewById(R.id.getHouseIntro);
+		getHouseIntro.setFilters(FilterArray1);
+		getHouseIntro.addTextChangedListener(textWatcherIntro);
+
+		InputFilter[] FilterArray2 = new InputFilter[1];
+		FilterArray2[0] = new InputFilter.LengthFilter(12);
+		getHouseName = (EditText)findViewById(R.id.getHouseName);
+		getHouseName.setFilters(FilterArray2);
+		getHouseName.addTextChangedListener(textWatcherName);
+
+		Intent intent = getIntent();
+		originalData = intent.getParcelableExtra("uData");
+		if(originalData.user_nickname != null && !originalData.user_nickname.equals("")){
+			getNickname.setText(originalData.user_nickname);
+			nickIn = true;
+			verifyButton();
+		}
+
+		if(originalData.house_name != null && !originalData.house_name.equals("")){
+			getHouseName.setText(originalData.house_name);
+			houseNameIn = true;
+			verifyButton();
+		}
+
+		if (originalData.house_intro != null && !originalData.house_intro.equals("")){
+			getHouseIntro.setText(originalData.house_intro);
+			introIn = true;
+			verifyButton();
+		}
+
+		houseImgURL = (originalData.house_img_url == null) ?  null: originalData.house_img_url;
+		if(originalData.house_img_url!=null && !originalData.house_img_url.equals("")){
+			loader.displayImage("http://54.178.158.103/images/" + originalData.house_img_url, houseImg, options);
+			houseImgIn = true;
+			verifyButton();
+		}
+
+		userImgURL = (originalData.user_img_url == null) ?  null: originalData.user_img_url;
+		if(originalData.user_img_url!=null && !originalData.user_img_url.equals("")){
+			loader.displayImage("http://54.178.158.103/images/" + originalData.user_img_url, userImg, options);
+			userImgIn = true;
+			verifyButton();
+		}
+
+		btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(getNickname.getText().toString() != null && !(getNickname.getText().equals(""))){
+					if(getHouseName.getText().toString() != null && !(getHouseName.getText().equals(""))){
+						if(getHouseIntro.getText().toString() != null && !(getHouseIntro.getText().equals(""))){
+							if(houseImgURL != null && userImgURL != null){
+								NetworkManager.getInstance().postEditMyData(EditMyHouseActivity.this, myData.user_num,
+										getNickname.getText().toString(), userImgURL, getHouseName.getText().toString(),
+										houseImgURL, getHouseIntro.getText().toString(), myData.alert, new NetworkManager.OnResultListener<ResultData>() {
+
+											@Override
+											public void onSuccess(ResultData result) {
+												setResult(Activity.RESULT_OK);
+												finish();
+											}
+
+											@Override
+											public void onFail(int code) {
+												Toast.makeText(EditMyHouseActivity.this, "방수정에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+												finish();
+											}
+										});
+							}
+						}
+					}
+				}
+			}
+		});
+		
+		getNickname.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_DONE){
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(getNickname.getWindowToken(), 0);
+				}
+				return false;
+			}
+		});
+		
+		getHouseName.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_DONE){
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(getHouseName.getWindowToken(), 0);
+				}
+				return false;
+			}
+		});
+		
+		getHouseIntro.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_DONE){
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(getHouseIntro.getWindowToken(), 0);
+				}
+				return false;
+			}
+		});
+		
+		houseImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ImgDialogFragment imgDialog = new ImgDialogFragment();
+				imgDialog.setOnItemDataClickListener(new ImgDialogFragment.OnItemDataClickListener() {
+
+					@Override
+					public void bringGallery(int galleryResult) {
+						Intent i = new Intent(
+								Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						i.putExtra("aspectX", 24);
+						i.putExtra("aspectY", 13);
+						i.setType("image/*");
+						i.putExtra("crop", "true");
+						i.putExtra("output", getTempUri());
+						i.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+						i.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());            
+						startActivityForResult(i, REQUEST_CODE_HOUSE);					
+					}
+
+					@Override
+					public void bringCamera(int cameraResult) {
+
+						Intent i = new Intent(
+								MediaStore.ACTION_IMAGE_CAPTURE);
+						i.putExtra("aspectX", 24);
+						i.putExtra("aspectY", 13);
+						i.putExtra("crop", "true");
+						i.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+						i.putExtra("outputFormat",
+								Bitmap.CompressFormat.JPEG.toString());            
+						startActivityForResult(i, REQUEST_CODE_HOUSE); 
+					}
+
+					@Override
+					public void deletePicture(int deleteResult) {
+
+					}
+				});
+				imgDialog.show(getSupportFragmentManager(),"dialog");
+			}
+		});
+		
+		userImg.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				ImgDialogFragment imgDialog = new ImgDialogFragment();
+				imgDialog.setOnItemDataClickListener(new ImgDialogFragment.OnItemDataClickListener() {
+
+					@Override
+					public void bringGallery(int galleryResult) {
+						Intent i = new Intent(
+								Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						i.putExtra("aspectX", 1);
+						i.putExtra("aspectY", 1);
+						i.setType("image/*");
+						i.putExtra("crop", "true");
+						i.putExtra("output", getTempUri());
+						i.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+						i.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());            
+						startActivityForResult(i, REQUEST_CODE_USER);					
+					}
+
+					@Override
+					public void bringCamera(int cameraResult) {
+
+						Intent i = new Intent(
+								MediaStore.ACTION_IMAGE_CAPTURE);
+						i.putExtra("aspectX", 1);
+						i.putExtra("aspectY", 1);
+						i.putExtra("crop", "true");
+						i.putExtra(MediaStore.EXTRA_OUTPUT, getTempUri());
+						i.putExtra("outputFormat",
+								Bitmap.CompressFormat.JPEG.toString());            
+						startActivityForResult(i, REQUEST_CODE_USER); 
+					}
+
+					@Override
+					public void deletePicture(int deleteResult) {
+
+					}
+				});
+				imgDialog.show(getSupportFragmentManager(),"dialog");
+			}
+		});
+
+		verifyButton();
+	};
+	
+	private Uri getTempUri() {
+		mSavedFile = new File(Environment.getExternalStorageDirectory(),
+				"temp_" + System.currentTimeMillis() / 1000 + ".jpg");
+
+		return Uri.fromFile(mSavedFile);
+	}
+
+	public void verifyButton() {
+		if (nickIn && houseNameIn && introIn) {
+			btn.setBackgroundResource(R.drawable.button);
+		} else {
+			btn.setBackgroundResource(R.drawable.deactiviated_btn);
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode ==  REQUEST_CODE_HOUSE && resultCode == Activity.RESULT_OK){
+			houseImgIn = true;
+			verifyButton();
+
+			text.setVisibility(View.GONE);
+
+			houseImgURL = (mSavedFile == null) ? null : mSavedFile.getAbsolutePath();
+			Bitmap bm = BitmapFactory.decodeFile(mSavedFile.getAbsolutePath() );//, options);
+			houseImg.setImageBitmap(bm);
+		}else if(requestCode == REQUEST_CODE_USER && resultCode == Activity.RESULT_OK){
+			userImgIn = true;
+			verifyButton();
+			
+			userImgURL = (mSavedFile == null) ? null : mSavedFile.getAbsolutePath();
+			Bitmap bm = BitmapFactory.decodeFile(mSavedFile.getAbsolutePath() );//, options);
+			userImg.setImageBitmap(bm);
+		}
+	}
+}

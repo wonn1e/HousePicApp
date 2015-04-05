@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="72dp" 
+    android:paddingBottom="0.5dp"
+    android:background="#20000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/user_img"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/room_color14" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/neighbor_rounding" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#90000000"
+            android:textSize="15dp"
+            android:typeface="sans" />
+
+        <Button
+            android:id="@+id/isNeighbor_btn"
+            android:layout_width="70dp"
+            android:layout_height="29dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="21.5dp"
+            android:background="@drawable/follow_btn"
+            android:focusable="false"
+            android:text="Follow"
+            android:textColor="#ffffff"
+            android:textSize="12dp"
+            android:textStyle="normal"
+            android:typeface="sans" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#10000000"
+    android:paddingBottom="0.5dp"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="86dp" 
+        android:background="#ffffff">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/userImgRank"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/ranking_rounding" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/houseName_ranking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="26dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:id="@+id/userNicknameInRank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="이름"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  |  "
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/userFollowerNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로워"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#40000000"
+                    android:textSize="12sp"
+                    android:typeface="sans" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/following_ranking"
+            android:layout_width="60dp"
+            android:layout_height="29dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/unfollow_btn"
+            android:focusable="false"
+            android:text="Follow"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:typeface="sans" />
+
+    </LinearLayout>
+
+</LinearLayout>

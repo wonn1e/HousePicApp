@@ -1,0 +1,107 @@
+package com.tacademy.penthouse.house;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.manager.NetworkManager;
+import com.tacademy.penthouse.manager.UserManager;
+
+public class EditUserNickname extends DialogFragment {
+	EditText editNickname;
+	String editValue = "";
+	ImageView cancel;
+	MyRoomAdapter myRoomAdapter;
+
+	UserData userData = UserManager.getInstance().getuData();
+	String pw = UserManager.getInstance().getPassword();
+
+	public interface OnReceiveMessageListener{
+		public void onReceiveMessage(int intMsg);
+	}
+
+	OnReceiveMessageListener mListener;
+
+	public void setOnReceiveMessageListener(OnReceiveMessageListener listener){
+		mListener = listener;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(DialogFragment.STYLE_NORMAL, R.style.HouseDialog);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater,
+			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		Dialog d = getDialog();
+		
+		myRoomAdapter = new MyRoomAdapter(getActivity());
+		
+		View v= inflater.inflate(R.layout.edit_user_nickname_layout, container, false);
+		cancel = (ImageView)v.findViewById(R.id.cancel_nickname);
+		editNickname = (EditText)v.findViewById(R.id.edit_nickname);
+		editNickname.setText(editValue);
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(10);
+		editNickname.setFilters(FilterArray);
+		
+		cancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+
+		Button btn = (Button)v.findViewById(R.id.edit_nickname_btn);		
+		btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				final String newName = editNickname.getText().toString();
+				if(newName != null  && !newName.equals("")){
+					NetworkManager.getInstance().postEditMyData(getActivity(), userData.user_num, newName, null,
+							userData.house_name, null, userData.house_intro, userData.alert, new NetworkManager.OnResultListener<ResultData>() {
+
+						@Override
+						public void onSuccess(ResultData result) {
+							myRoomAdapter.updateNickName(userData, newName);
+							if(mListener != null){
+								mListener.onReceiveMessage(1);
+							}
+							dismiss();
+						}
+
+						@Override
+						public void onFail(int code) {
+							if(getActivity() != null)
+							Toast.makeText(getActivity(), "닉네임 바꾸기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+				
+			}
+		});
+		return v;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+		super.onActivityCreated(arg0);
+		Dialog d= getDialog();
+	}
+}

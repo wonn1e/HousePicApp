@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="30dp"
+        android:paddingTop="40dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_home_nofriends" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:text="나와 취향이 맞는 이웃을 찾아"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#40000000"
+            android:textSize="19sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:text="이웃을 맺어 보세요!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#40000000"
+            android:textSize="19sp"
+            android:typeface="sans" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="14dp"
+            android:text="다른 이웃의 집에서 팔로잉 할 수 있습니다."
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#30000000"
+            android:textSize="13sp"
+            android:typeface="sans" />
+    </LinearLayout>
+
+</FrameLayout>

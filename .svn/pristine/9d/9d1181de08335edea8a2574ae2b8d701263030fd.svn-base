@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e8e6dd"
+    android:orientation="vertical" >
+    
+    <ListView
+        android:id="@+id/sortList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e8e6dd"
+        android:divider="@null"
+        android:paddingBottom="0.5dp" >
+
+    </ListView>
+
+</LinearLayout>

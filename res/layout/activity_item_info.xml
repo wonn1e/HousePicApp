@@ -1,0 +1,210 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FrameLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:app1="http://schemas.android.com/apk/res/com.tacademy.penthouse">
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="360dp" >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                </android.support.v4.view.ViewPager>
+
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:layout_gravity="bottom"
+                    android:padding="10dip"
+					app1:pageColor="#8E8A89"
+                    app:fillColor="#ffffff"
+                     />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="14dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:ellipsize="end"
+                    android:text="제품명"
+                    android:textColor="#90000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:paddingTop="0dp"
+                    android:text="Price"
+                    android:textColor="#90000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/item_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:paddingTop="11dp"
+                    android:text="브랜드"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#50000000"
+                    android:textSize="13sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/item_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="100"
+                    android:ellipsize="end"
+                    android:paddingTop="2dp"
+                    android:singleLine="true"
+                    android:text="사이즈사이즈사이즈사이즈사이즈사이즈사이즈사이즈사이즈사이즈사이즈"
+                    android:textColor="#50000000"
+                    android:textSize="13sp"
+                    android:textStyle="normal"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp" >
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp" >
+
+                    <TextView
+                        android:id="@+id/pickText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="4dp"
+                        android:background="@drawable/pick_btn"
+                        android:gravity="center"
+                        android:paddingLeft="26dp"
+                        android:text="PICK"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        android:typeface="sans" />
+
+                    <ImageView
+                        android:id="@+id/pickClick"
+                        android:layout_width="105dp"
+                        android:layout_height="45dp"
+                        android:layout_marginRight="4dp"
+                        android:background="@drawable/pick_btn"
+                        android:src="@drawable/shadow"
+                        android:visibility="invisible" />
+
+                    <ImageView
+                        android:id="@+id/itemLike_itemInfo"
+                        android:layout_width="23dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/ic_info_pick_off" />
+
+                </FrameLayout>
+
+                <Button
+                    android:id="@+id/item_buy_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/brown_btn"
+                    android:text="구매하기"
+                    android:textColor="#ffffff"
+                    android:textSize="17sp"
+                    android:typeface="sans" />
+
+            </LinearLayout>
+
+            <com.meetme.android.horizontallistview.HorizontalListView
+                android:id="@+id/horizontalListView2"
+                android:layout_width="match_parent"
+                android:layout_height="77.5dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1.56"
+                android:background="#ffffff"
+                android:divider="@null" >
+
+            </com.meetme.android.horizontallistview.HorizontalListView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_info_dim" />
+
+        <Button
+            android:id="@+id/item_share_btn"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="11dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_info_share"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp" />
+
+        <ImageView
+            android:id="@+id/home_iteminfo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="11dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/ic_gnb_home" />
+
+    </FrameLayout>
+
+</FrameLayout>

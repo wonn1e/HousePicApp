@@ -1,0 +1,189 @@
+package com.tacademy.penthouse.house;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore.Images;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.UserData;
+
+public class MyHouseView extends FrameLayout{
+
+	public MyHouseView(Context context) {
+		super(context);
+		init();
+	}
+
+	public interface OnItemClickListener{
+		public void onEditClick(View v, UserData uData);
+		public void onNickNameEditClick(View v, UserData uData);
+		public void onHouseIntroEditClick(View v, UserData uData);
+		public void onUserImgEditClick(View v, UserData uData);
+		public void onHouseImgEditClick(View v, UserData uData);
+		public void onFollowClick(View v, UserData uData);
+		public void onFollowingClick(View v, UserData uData);
+	}
+	OnItemClickListener mListener;
+	public void setOnItemClickListener(OnItemClickListener listener){
+		mListener = listener;
+	}
+
+	UserData uData;
+	TextView user_nickname, house_intro, editNickname, editHouseIntro, editHouseImg, editUserImg;
+	ImageView  house_img, edit_btn;
+	ImageViewRounded user_img;
+	Button following_btn, follower_btn;
+	boolean isClicked;
+	ImageLoader loader;
+	DisplayImageOptions userOptions, houseOptions;
+	private void init(){
+		LayoutInflater.from(getContext()).inflate(R.layout.header_view_myhouse_layout, this);
+		editNickname = (TextView)findViewById(R.id.editNickname);
+		editHouseIntro = (TextView)findViewById(R.id.editHouseInfo);
+		editHouseImg = (TextView)findViewById(R.id.editHouseImg);
+		editUserImg = (TextView)findViewById(R.id.editUserImg);
+
+		user_nickname = (TextView)findViewById(R.id.my_NicknameHouse);
+		house_intro = (TextView)findViewById(R.id.my_houseInfoHouse);
+		user_img = (ImageViewRounded)findViewById(R.id.my_ImgHouse);
+		house_img = (ImageView)findViewById(R.id.my_houseImgHouse);
+		following_btn = (Button)findViewById(R.id.my_followingBtnHouse);
+		follower_btn = (Button)findViewById(R.id.my_followerBtnHouse);
+		loader = ImageLoader.getInstance();
+		
+		houseOptions = new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.img_myhouse_default)
+		.showImageForEmptyUri(R.drawable.ic_empty)
+		.showImageOnFail(R.drawable.img_myhouse_default)
+		.cacheInMemory(true)
+		.cacheOnDisc(true)
+		.considerExifParams(true)
+		.build();
+	
+		userOptions = new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.btn_color_normal_10)
+		.showImageForEmptyUri(R.drawable.ic_empty)
+		.showImageOnFail(R.drawable.img_mypage_default)
+		.cacheInMemory(true)
+		.cacheOnDisc(true)
+		.considerExifParams(true)
+		.build();
+		
+		user_img.setEnabled(false);
+		house_img.setEnabled(false);
+
+		editNickname.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mListener != null) {
+					mListener.onNickNameEditClick(MyHouseView.this, uData);
+				}
+			}
+		});
+
+		editHouseIntro.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mListener != null) {
+					mListener.onHouseIntroEditClick(MyHouseView.this, uData);
+				}
+			}
+		});
+
+		house_img.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mListener != null) {
+					mListener.onHouseImgEditClick(MyHouseView.this, uData);
+				}	
+			}
+		});
+
+		user_img.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mListener != null) {
+					mListener.onUserImgEditClick(MyHouseView.this, uData);
+				}				
+			}
+		});
+
+		follower_btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(mListener != null){
+					mListener.onFollowingClick(MyHouseView.this, uData);
+				}
+			}
+		});
+
+		following_btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(mListener != null){
+					mListener.onFollowClick(MyHouseView.this, uData);
+				}
+			}
+		});
+
+		if(MyHouseFragment.SAVE_STATE_POINT == 1){
+			editHouseImg.setVisibility(View.VISIBLE);
+			editHouseIntro.setVisibility(View.VISIBLE);
+			editNickname.setVisibility(View.VISIBLE);
+			editUserImg.setVisibility(View.VISIBLE);
+			follower_btn.setEnabled(false);
+			following_btn.setEnabled(false);
+			user_img.setEnabled(true);
+			house_img.setEnabled(true);
+		}else if(MyHouseFragment.SAVE_STATE_POINT == 0){
+			editHouseImg.setVisibility(View.GONE);
+			editHouseIntro.setVisibility(View.GONE);
+			editNickname.setVisibility(View.GONE);
+			editUserImg.setVisibility(View.GONE);
+			user_img.setEnabled(false);
+			house_img.setEnabled(false);
+		}
+
+	}
+
+	public void setData(UserData data){
+		uData = data;
+		user_nickname.setText(uData.user_nickname);
+		if(uData.house_intro == null){
+			house_intro.setText(uData.user_nickname + "´ÔÀÇ HouseÀÔ´Ï´Ù!");
+		}else if(uData.house_intro.length() > 25){
+			String front = uData.house_intro.substring(0, 25);
+			String back = uData.house_intro.substring(25, uData.house_intro.length());
+			house_intro.setText(front + "\n" + back);
+		}else{
+			house_intro.setText(uData.house_intro);
+		}
+		
+		loader.displayImage("http://54.178.158.103/images/" + uData.user_img_url, user_img, userOptions);
+		loader.displayImage("http://54.178.158.103/images/" + uData.house_img_url , house_img, houseOptions);
+
+		follower_btn.setText(Html.fromHtml("<b>"+uData.follower_cnt + "</b> ÆÈ·Î¿ö"));
+		following_btn.setText(Html.fromHtml("<b>"+uData.following_cnt + "</b> ÆÈ·ÎÀ×"));
+	}
+}

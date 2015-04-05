@@ -1,0 +1,105 @@
+package com.tacademy.penthouse.house;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.tacademy.penthouse.R;
+import com.tacademy.penthouse.entity.ResultData;
+import com.tacademy.penthouse.entity.UserData;
+import com.tacademy.penthouse.manager.NetworkManager;
+import com.tacademy.penthouse.manager.UserManager;
+
+public class EditHouseIntro extends DialogFragment {
+	EditText editHouseIntro;
+	String editValue = "";
+	String intro= "";
+	ImageView cancel;
+	UserData userData = UserManager.getInstance().getuData();
+	MyRoomAdapter myRoomAdapter;
+	String pw = UserManager.getInstance().getPassword();
+	
+	public interface OnReceiveHouseintroListener{
+		public void onReceiveHousename(int success);
+	}
+	
+	OnReceiveHouseintroListener mListener;
+	
+	public void setOnReceiveHouseintroListener(OnReceiveHouseintroListener listener){
+		mListener = listener;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(DialogFragment.STYLE_NORMAL, R.style.HouseDialog);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		Dialog d  = getDialog();
+	//	d.requestWindowFeature(Window.FEATURE_LEFT_ICON);
+		myRoomAdapter = new MyRoomAdapter(getActivity());
+		View v= inflater.inflate(R.layout.edit_house_intro_layout, container, false);
+		cancel = (ImageView)v.findViewById(R.id.cancel_houseintro);
+		editHouseIntro = (EditText)v.findViewById(R.id.edit_houseintro);
+		editHouseIntro.setText(editValue);
+		InputFilter[] FilterArray = new InputFilter[1];
+		FilterArray[0] = new InputFilter.LengthFilter(50);
+		editHouseIntro.setFilters(FilterArray);
+		
+		cancel.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+		});
+		
+		Button btn = (Button)v.findViewById(R.id.intro_changed_btn);
+		btn.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				intro = editHouseIntro.getText().toString();
+				if(intro != null && !intro.equals("")){
+					NetworkManager.getInstance().postEditMyData(getActivity(), userData.user_num, userData.user_nickname, null,
+							userData.house_name, null, intro, userData.alert, new NetworkManager.OnResultListener<ResultData>() {
+
+						@Override
+						public void onSuccess(ResultData result) {
+							myRoomAdapter.updateHouseIntro(userData, intro);
+							if(mListener != null){
+								mListener.onReceiveHousename(1);
+							}
+							dismiss();
+						}
+
+						@Override
+						public void onFail(int code) {
+							if(getActivity() != null)
+							Toast.makeText(getActivity(), "집 소개 바꾸기에 실패했습니다.", Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+			}
+		});
+		return v;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+		super.onActivityCreated(arg0);
+		Dialog d= getDialog();
+	//	d.setTitle("하우스 소개 변경하기");
+	//	d.setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
+	}
+}

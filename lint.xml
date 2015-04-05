@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InflateParams" severity="ignore" />
+    <issue id="NewApi" severity="ignore">
+        <ignore path="src/com/tacademy/penthouse/HeaderGridView.java" />
+        <ignore path="src/com/tacademy/penthouse/house/HouseActivity.java" />
+        <ignore path="src/com/tacademy/penthouse/house/MyRoomAdapter.java" />
+        <ignore path="src/com/tacademy/penthouse/itemlike/CreateNewRoomActivity.java" />
+        <ignore path="src/com/tacademy/penthouse/room/MyRoomInfoActivity.java" />
+        <ignore path="src/com/tacademy/penthouse/room/UserRoomInfoActivity.java" />
+    </issue>
+    <issue id="ResourceAsColor" severity="ignore" />
+</lint>
