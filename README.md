@@ -25,7 +25,6 @@ In order to run the program, you need to download several libraries.
   -AndroidAysncHttpLibrary
   -HorizontalVariableListView
   
-Once you download all the libraries and APKs that are referenced, you should include them to HousePic project 'Properties -> java build path'
 If some warning shows, you should copy appcompat_v7 library's(that has been created once you create any kind of Android project
 in Eclipes) appcompat_v7.jar file in bin folder and paste/replace appcompat_v7.jar file in the referenced APKs. If there isn't 
 any appcompat_v7.jar file to begin with, you can ignore that library or APK.
